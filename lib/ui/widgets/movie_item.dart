@@ -1,13 +1,15 @@
-import 'package:fl_movies/ui/pages/movie.dart';
 import 'package:flutter/material.dart';
+
+import 'package:fl_movies/domain/models/movie.dart';
+import 'package:fl_movies/ui/pages/movie.dart';
 
 class MovieItem extends StatelessWidget {
   const MovieItem({
     super.key,
-    required this.movieId,
+    required this.movie,
   });
 
-  final int movieId;
+  final Movie movie;
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +18,7 @@ class MovieItem extends StatelessWidget {
       onTap: () {
         Navigator.push(
           context,
-          MoviePage.route(context, movieId),
+          MoviePage.route(context, movie),
         );
       },
       child: Container(
@@ -25,12 +27,27 @@ class MovieItem extends StatelessWidget {
           children: [
             Expanded(
               child: Hero(
-                tag: 'movie-poster-$movieId',
+                tag: 'movie-poster-${movie.id}',
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(16),
-                  child: Image.asset(
-                    'assets/images/sample-poster.jpeg',
+                  child: Image.network(
+                    movie.posterFullUrl,
                     fit: BoxFit.cover,
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) {
+                        return child;
+                      }
+                      return ColoredBox(
+                        color: Colors.black12,
+                        child: Center(
+                          child: Icon(
+                            Icons.movie_creation_outlined,
+                            size: 48,
+                            color: Theme.of(context).colorScheme.onSurface,
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 ),
               ),
@@ -39,7 +56,7 @@ class MovieItem extends StatelessWidget {
               height: 8,
             ),
             Text(
-              'Movie name',
+              movie.title,
               style: Theme.of(context).textTheme.titleSmall,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,

@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 
+import 'package:fl_movies/domain/models/movie.dart';
+
 class MoviePage extends StatelessWidget {
   const MoviePage({
+    required this.movie,
     super.key,
-    required this.movieId,
   });
 
-  static Route<void> route(BuildContext context, int movieId) {
+  static Route<void> route(BuildContext context, Movie movie) {
     return MaterialPageRoute(
       builder: (_) => MoviePage(
-        movieId: movieId,
+        movie: movie,
       ),
     );
   }
 
-  final int movieId;
+  final Movie movie;
 
   @override
   Widget build(BuildContext context) {
@@ -28,11 +30,11 @@ class MoviePage extends StatelessWidget {
         child: Column(
           children: [
             Hero(
-              tag: 'movie-poster-$movieId',
+              tag: 'movie-poster-${movie.id}',
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(24),
-                child: Image.asset(
-                  'assets/images/sample-poster.jpeg',
+                child: Image.network(
+                  movie.posterFullUrl,
                   fit: BoxFit.cover,
                   height: 360,
                 ),
@@ -42,14 +44,14 @@ class MoviePage extends StatelessWidget {
               height: 16,
             ),
             Text(
-              'Movie name',
+              movie.title,
               style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(
               height: 16,
             ),
             Text(
-              '2023',
+              movie.releaseDate.year.toString(),
               style: Theme.of(context).textTheme.labelMedium,
             ),
             const SizedBox(

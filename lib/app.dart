@@ -1,4 +1,8 @@
+import 'package:fl_movies/domain/repos/movies_repo.dart';
+import 'package:fl_movies/domain/services/movies_service.dart';
 import 'package:flutter/material.dart';
+
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:fl_movies/l10n/l10n.dart';
 import 'package:fl_movies/ui/pages/home.dart';
@@ -17,7 +21,12 @@ class App extends StatelessWidget {
       ),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      home: const HomePage(),
+      home: RepositoryProvider(
+        create: (context) => MoviesRepository(
+          service: MoviesService(),
+        ),
+        child: const HomePage(),
+      ),
     );
   }
 }
