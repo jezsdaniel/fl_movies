@@ -9,4 +9,6 @@ class MoviesRepository {
   final MoviesService service;
 
   Future<List<Movie>> getPopularMovies() async => service.getPopularMovies();
+
+  Future<Movie> getMovie(int movieId) async => service.getMovie(movieId);
 }

@@ -21,12 +21,15 @@ class App extends StatelessWidget {
       ),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      home: RepositoryProvider(
-        create: (context) => MoviesRepository(
-          service: MoviesService(),
-        ),
-        child: const HomePage(),
-      ),
+      onGenerateRoute: (_) => HomePage.route(),
+      builder: (context, child) {
+        return RepositoryProvider(
+          create: (context) => MoviesRepository(
+            service: MoviesService(),
+          ),
+          child: child,
+        );
+      },
     );
   }
 }

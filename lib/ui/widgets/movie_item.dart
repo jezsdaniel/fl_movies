@@ -18,7 +18,7 @@ class MovieItem extends StatelessWidget {
       onTap: () {
         Navigator.push(
           context,
-          MoviePage.route(context, movie),
+          MoviePage.route(movie),
         );
       },
       child: Container(

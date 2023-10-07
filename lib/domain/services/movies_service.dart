@@ -40,12 +40,27 @@ class MoviesService {
               .map((e) => Movie.fromJson(e as Map<String, dynamic>)),
         );
       } else {
-        print(response.statusCode);
-        print(response.body.toString());
         throw Exception('Error getting movies');
       }
     } catch (e) {
-      print(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  Future<Movie> getMovie(int movieId) async {
+    try {
+      final response = await _httpClient.get(
+        getUrl(url: 'movie/$movieId?language=en-US'),
+        headers: getHeaders(),
+      );
+      if (response.statusCode == 200) {
+        return Movie.fromJson(
+          json.decode(response.body) as Map<String, dynamic>,
+        );
+      } else {
+        throw Exception('Error getting movies');
+      }
+    } catch (e) {
       throw Exception(e);
     }
   }

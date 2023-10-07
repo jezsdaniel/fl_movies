@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:fl_movies/blocs/movies_list/movies_list_bloc.dart';
 import 'package:fl_movies/domain/repos/movies_repo.dart';
@@ -8,6 +9,12 @@ import 'package:fl_movies/ui/widgets/widgets.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
+
+  static Route<void> route() {
+    return MaterialPageRoute(
+      builder: (_) => const HomePage(),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +49,15 @@ class _HomeUIState extends State<_HomeUI> {
           'Popular Movies',
         ),
       ),
-      body: BlocBuilder<MoviesListBloc, MoviesListState>(
+      body: BlocConsumer<MoviesListBloc, MoviesListState>(
+        listener: (context, state) {
+          if (state.status == MoviesListStatus.failure) {
+            Fluttertoast.showToast(
+              msg: 'Failed to fetch movies.',
+              toastLength: Toast.LENGTH_SHORT,
+            );
+          }
+        },
         builder: (context, state) {
           if (state.status == MoviesListStatus.fetching) {
             return const Center(

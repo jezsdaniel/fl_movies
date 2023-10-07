@@ -15,6 +15,15 @@ class Movie {
         releaseDate: DateTime.parse(json['release_date'] as String),
       );
 
+  Movie.empty()
+      : this(
+          id: -1,
+          title: '',
+          overview: '',
+          posterPath: '',
+          releaseDate: DateTime.now(),
+        );
+
   final int id;
   final String title;
   final String overview;
